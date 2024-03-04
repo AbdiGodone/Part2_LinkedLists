@@ -11,6 +11,9 @@ public class LinkedList {
     private Node tail;
     private int num_elements;
 
+    /*
+    this method returns the size of the linkedList
+     */
     public int size() {
         return num_elements;
     }
@@ -59,19 +62,31 @@ public class LinkedList {
 
 
     /**
-     *
+     * this method adds a song passed in the parameter to the end of the LinkedList if the linkedList is null then we just add to it as first
+     * if there is more in the linkedList we check that its the same artist if it is we add it to the end of the linkedList else we throw IllegalArgumentException
+     * then we encerement the number of elements in the LinkedList
      * @param song takes a parameter song and adds it to the end of the linkedList
      */
     public void add(Song song) {
+        Node current = head;
+
         Node node = new Node(song);
+
         if (num_elements == 0) {
-            head = node;
+           head = node;
             tail = node;
         } else {
-            tail.setNext(node);
-            tail = node;
 
+            if (song.getArtist().equals(current.getData().getArtist())){
+
+                tail.setNext(node);
+                tail = node;
+            }
+            else {
+               throw new  IllegalArgumentException("they have to have same artist");
+            }
         }
+
         num_elements++;
     }
 
@@ -87,6 +102,7 @@ public class LinkedList {
             isEmpty = true;
         }
         return isEmpty;
+
     }
 
     /**
@@ -107,6 +123,25 @@ public class LinkedList {
             current.getNext();
         }
         return current;
+
+    }
+
+    /**
+     * this method takes a song and removes all instances of the song we loop till we reach the tail
+     * everytime we loop and find instance of that we remove it from the linkedList
+     * @param song takes the song to be deleted
+     * @return returns true if deleted else returns false
+     */
+    public boolean removeAll(Song song){
+        boolean removed = false;
+        Node current = head;
+        while (current.getNext()!=null){
+            if (current.getData().equals(song)){
+                current.setNext(current.getNext().getNext());
+                removed = true;
+            }
+        }
+return  removed;
     }
 
 
@@ -115,6 +150,7 @@ public class LinkedList {
         private Node next;
 
         /**
+         * this constructor takes a song type data, and it assigns the data passed to the data and sets the next instant variable to null
          * @param data passed in the param gets the data and sets the data to field data and sets the next to null
          */
         public Node(Song data) {
@@ -123,6 +159,7 @@ public class LinkedList {
         }
 
         /**
+         * this method sets the instant variable data to the data passed in the param
          * @param data it takes string data and sets the value passed to the field data
          */
         public void setData(Song data) {
@@ -130,16 +167,23 @@ public class LinkedList {
         }
 
         /**
+         * this method sets the next instant variable to the next passed in the param
          * @param next gets the next and sets it from null to the next one passed
          */
         public void setNext(Node next) {
             this.next = next;
         }
 
+        /*
+        this method returns the next instant variable
+         */
         public Node getNext() {
             return this.next;
         }
 
+        /*
+        this method returns the data
+         */
         public Song getData() {
             return this.data;
         }
